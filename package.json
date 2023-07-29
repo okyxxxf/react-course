@@ -1,0 +1,30 @@
+{
+  "name": "react-course",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Employers.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/okyxxxf/react-course.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/okyxxxf/react-course/issues"
+  },
+  "homepage": "https://github.com/okyxxxf/react-course#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.22.9",
+    "@babel/core": "^7.22.9",
+    "@babel/preset-env": "^7.22.9",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.12.1"
+  }
+}
