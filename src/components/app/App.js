@@ -14,26 +14,45 @@ import "../post-list-item/post-list-item.css";
 import "../post-status-filter/post-status-filter.css";
 import "../search-panel/search-panel.css";
 
-const App = () => {
+export default class App extends React.Component {
+	constructor(props) {
+		super(props)
+		this.state = {
+			data : [
+				{label : 'Lol', important: true, id : "1"},
+				{label : 'hello', important: false, id : "2"},
+				{label : 'su', important: true, id : "3"},
+				{label : 'bye', important: false, id : "4"},
+				{label : 'bbbbbbbb', important: true, id : "5"},
+			]
+		}
 
-	const data = [
-		{label : 'Lol', important: true, id : "qwe"},
-		{label : 'hello', important: false, id : "qwe2"},
-		{label : 'su', important: true, id : "qwe3"},
-		{label : 'bye', important: false, id : "qwe4"},
-		{label : 'bbbbbbbb', important: true, id : "qwe5"},
-	]
-	return (
-		<div className="app">
-			<AppHeader />
-			<div className="search-panel d-flex">
-				<SearchPanel />
-				<PostStatusFilter />	
+		this.deleteItem = this.deleteItem.bind(this);
+		this.maxId = 6;
+	}
+
+	deleteItem(id) {
+		const index = this.state.data.findIndex((element) => element.id === id );
+		const newArr = [...this.state.data.slice(0, index), ...this.state.data.slice(index + 1, this.state.data.length)];
+		console.log(newArr, index);
+
+		this.setState(({data}) => ({
+			data : newArr
+		}));
+	}
+
+	render() {
+		const {data} = this.state;
+		return (
+			<div className="app">
+				<AppHeader />
+				<div className="search-panel d-flex">
+					<SearchPanel />
+					<PostStatusFilter />	
+				</div>
+				<Postlist posts={data} onDelete={this.deleteItem}/>
+				<PostAddForm />
 			</div>
-			<Postlist posts={data} />
-			<PostAddForm />
-		</div>
-	)
+		)
+	}
 };
-
-export default App;
