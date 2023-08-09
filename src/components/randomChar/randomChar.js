@@ -4,11 +4,6 @@ import GotService from '../../service/service';
 import ErrorMessage from '../errorMessage/errorMessage';
 
 export default class RandomChar extends Component {
-    constructor() {
-        super(); 
-        this.generateCharacter(); 
-    }
-
     got = new GotService();
 
     state = {
@@ -16,6 +11,10 @@ export default class RandomChar extends Component {
         loading : true,
         error : false
     }  
+
+    componentDidMount() {
+        this.generateCharacter();
+    }
 
     onChangeChar = (char) => {
         this.setState({
@@ -43,20 +42,16 @@ export default class RandomChar extends Component {
         const { char, loading, error} = this.state;
         const contentComponent = error || loading ? null : <Content char={char}/>;
         const spinnerComponent = loading ? 
-            <Spinner className='m-5 p-5 text-bg-light'>loading...</Spinner> 
+            <ListGroupItem><Spinner className='m-5 p-5 text-bg-light'>loading..</Spinner></ListGroupItem>
             : null;
-        const errorComponent = error ? <ErrorMessage/> : null;
+        const errorComponent = error ? <ListGroupItem><ErrorMessage/></ListGroupItem> : null;
 
 
         return (
             <ListGroup className='mb-5'>
                 {contentComponent}
-                <ListGroupItem>
                 {spinnerComponent}
-                </ListGroupItem>
-                <ListGroupItem>
                 {errorComponent}
-                </ListGroupItem>
             </ListGroup>
         );
     }
@@ -67,27 +62,27 @@ const Content = ({char}) => {
     return (
         <>
             <ListGroupItem className='h4 m-0'>
-                Random Character: {name}
+                Random Character: {name ? name : 'no info'}
             </ListGroupItem>
             <ListGroupItem
                 className='d-flex justify-content-between px-5'>
                     <span className="term">Gender </span>
-                    <span>{gender}</span>
+                    <span>{gender ? gender : 'no info'}</span>
             </ListGroupItem>
             <ListGroupItem
                 className='d-flex justify-content-between px-5'>
                 <span className="term">Born </span>
-                <span>{born}</span>
+                <span>{born ? born : 'no info'}</span>
             </ListGroupItem>
             <ListGroupItem
                 className='d-flex justify-content-between px-5'>
                 <span className="term">Died </span>
-                <span>{died}</span>
+                <span>{died ? died : 'no info'}</span>
             </ListGroupItem>
             <ListGroupItem
                 className='d-flex justify-content-between px-5'>
                     <span className="term">Culture </span>
-                    <span>{culture}</span>
+                    <span>{culture ? culture : 'no info'}</span>
             </ListGroupItem>
         </>
     )

@@ -38,7 +38,9 @@ export default class GotService {
     }
 
     _formatterCharacter(char) {
+        const id = char.url.split('/');
         return {
+            id : id[id.length - 1],
             name : char.name,
             gender : char.gender,
             born : char.born,
