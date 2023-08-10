@@ -11,41 +11,67 @@ export default class GotService {
         return await result.json();
     }
 
-    async getAllCharacters(page = 1, count = 10) {
+    getAllCharacters = async (page = 4, count = 10) => {
         const res = await this.getResource(`/characters?page=${page}&pageSize=${count}`);
         return res.map(this._formatterCharacter);
     }
 
-    async getCharacter(id = 1) {
+    getCharacter = async (id = 1) => {
         const res = await this.getResource(`/characters/${id}`);
         return this._formatterCharacter(res);
     }
 
-    getAllBooks(page = 1, count = 10) {
-        return this.getResource(`/books?page=${page}&pageSize=${count}`);
+    getAllBooks = async (page = 1, count = 10) => {
+        const res = await this.getResource(`/books?page=${page}&pageSize=${count}`);
+        return res.map(this._formatterBook);
     }
 
-    getBook(id = 1) {
-        return this.getResource(`/books/${id}`);
+    getBook = async (id = 1) => {
+        const res = await this.getResource(`/books/${id}`);
+        return this._formatterBook(res);
     }
 
-    getAllHouses(page = 1, count = 10) {
-        return this.getResource(`/houses?page=${page}&pageSize=${count}`);
+    getAllHouses = async (page = 1, count = 10) => {
+        const res = await this.getResource(`/houses?page=${page}&pageSize=${count}`);
+        return res.map(this._formatterHouse);
     }
 
-    getHouse(id = 1) {
-        return this.getResource(`/houses/${id}`);
+    getHouse = async (id = 1) => {
+        const res = await this.getResource(`/houses/${id}`);
+        return this._formatterHouse(res);
     }
 
     _formatterCharacter(char) {
-        const id = char.url.split('/');
+        const urlArr = char.url.split('/');
+        const id = urlArr[urlArr.length - 1];
         return {
-            id : id[id.length - 1],
+            id : id,
             name : char.name,
             gender : char.gender,
             born : char.born,
             died : char.died,
             culture : char.culture,
+        }
+    }
+
+    _formatterBook(book) {
+        const urlArr = book.url.split('/');
+        const id = urlArr[urlArr.length - 1];
+        return {
+            id : id,
+            name : book.name,
+            author : book.authors[0],
+            numberOfPages : book.numberOfPages
+        }
+    }
+
+    _formatterHouse(house) {
+        const urlArr = house.url.split('/');
+        const id = urlArr[urlArr.length - 1];
+        return {
+            id : id,
+            name : house.name,
+            region : house.region,
         }
     }
 }

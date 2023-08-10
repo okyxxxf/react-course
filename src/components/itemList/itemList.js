@@ -7,16 +7,18 @@ export default class ItemList extends Component {
     got = new GotService();
 
     state = {
-        charList : [],
+        itemList : [],
         loading : true,
         error : false,
     }
 
-    updateCharList = () => {
-        this.got.getAllCharacters(3,5)
+    updateItemList = () => {
+        const {findItemList} = this.props;
+
+        findItemList()
             .then((list) => {
                 this.setState({
-                    charList: list,
+                    itemList: list,
                     loading : false
                 })
             })
@@ -38,7 +40,7 @@ export default class ItemList extends Component {
     }
 
     componentDidMount() {
-        this.updateCharList();
+        this.updateItemList();
     }
 
     renderItems(items) {
@@ -46,7 +48,7 @@ export default class ItemList extends Component {
             if (!item.name || !item.id) return null;
             return (
                 <ListGroupItem 
-                onClick={() => this.props.onCharSelected(item.id)}
+                onClick={() => this.props.onItemSelected(item.id)}
                 key={item.id}>
                     {item.name}
                 </ListGroupItem>
@@ -55,12 +57,12 @@ export default class ItemList extends Component {
     }
 
     render() {
-        const {charList, loading, error} = this.state;
+        const {itemList, loading, error} = this.state;
 
-        if (!charList) return <ListGroupItem><ErrorMessage/></ListGroupItem>;
-        const items = this.renderItems(charList);
+        if (!itemList) return <ListGroupItem><ErrorMessage/></ListGroupItem>;
+        const items = this.renderItems(itemList);
     
-        const contentComponent = error || loading ? null : <Content chars={items}/>;
+        const contentComponent = error || loading ? null : <Content items={items}/>;
         const spinnerComponent = loading ? 
             <ListGroupItem><Spinner className='m-5 p-5 text-bg-light'>loading..</Spinner></ListGroupItem>
             : null;
@@ -76,10 +78,10 @@ export default class ItemList extends Component {
     }
 }
 
-const Content = ({chars}) => {
+const Content = ({items}) => {
     return (
         <>
-            {chars}
+            {items}
         </>
     )
 }

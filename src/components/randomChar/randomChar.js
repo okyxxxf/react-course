@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {ListGroup, ListGroupItem, Spinner} from 'reactstrap';
+import {ListGroup, ListGroupItem, Spinner, Row, Col} from 'reactstrap';
 import GotService from '../../service/service';
 import ErrorMessage from '../errorMessage/errorMessage';
 
@@ -48,11 +48,15 @@ export default class RandomChar extends Component {
 
 
         return (
-            <ListGroup className='mb-5'>
-                {contentComponent}
-                {spinnerComponent}
-                {errorComponent}
-            </ListGroup>
+            <Row>
+                <Col lg={{size: 5, offset: 0}}>
+                    <ListGroup className='mb-5'>
+                        {contentComponent}
+                        {spinnerComponent}
+                        {errorComponent}
+                    </ListGroup>
+                </Col>
+            </Row>
         );
     }
 }
