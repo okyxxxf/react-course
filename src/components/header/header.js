@@ -1,43 +1,44 @@
 import React from 'react';
 import {Container, Row, Col, Nav, NavItem, NavLink} from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
     return (
-        <Container className='h5 text-light'>
+        <Container className='h5 text-light m-3'>
             <Row xl="2">
-                <Col className='d-flex'>
+                <Col className='d-flex justify-content-start'>
                     <Nav>
                         <NavItem>
-                            <NavLink 
-                            className='text-light'
-                            href="#">
-                            Game of Thrones DB
-                            </NavLink>
+                            <Link 
+                            className='text-light' 
+                            to='/'>
+                                Game of Thrones 
+                            </Link>
                         </NavItem>
                     </Nav>
                 </Col>
                 <Col className='d-flex justify-content-end'>
                     <Nav>
                         <NavItem>
-                            <NavLink 
-                            className='text-light'
-                            href="#">
-                                Characters
-                            </NavLink>
+                            <Link 
+                            className='text-light m-3' 
+                            to='/characters/'>
+                                Characters 
+                            </Link>
                         </NavItem>
                         <NavItem>
-                            <NavLink 
-                            className='text-light'
-                            href="#">
-                                Houses
-                            </NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink 
-                            className='text-light'
-                            href="#">
+                            <Link 
+                            className='text-light m-3' 
+                            to='/books/'>
                                 Books
-                            </NavLink>
+                            </Link>
+                        </NavItem>
+                        <NavItem>
+                            <Link 
+                            className='text-light m-3' 
+                            to='/houses/'>
+                                Houses 
+                            </Link>
                         </NavItem>
                     </Nav>
                 </Col>

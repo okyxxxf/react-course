@@ -18,3 +18,17 @@ a:active {
     text-decoration: none;
     color: inherit;
 }
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+    outline: none;
+}
+body {
+    overflow-x: hidden;
+    background: url('/src/got.jpeg') center center no-repeat;
+    background-size: cover;
+    font-size: 16px;
+    height: 100%;	
+}

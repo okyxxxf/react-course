@@ -2,8 +2,9 @@ import React, {Component} from 'react';
 import {Container, ListGroup, ListGroupItem, Spinner} from 'reactstrap';
 import GotService from '../../service/service';
 import ErrorMessage from '../errorMessage/errorMessage';
+import { useParams } from 'react-router-dom';
 
-export default class ItemDetails extends Component {
+class ItemDetails extends Component {
     got = new GotService();
 
     state = {
@@ -13,7 +14,8 @@ export default class ItemDetails extends Component {
     }
 
     updateItem() {
-        const {itemId, findItem} = this.props;
+        const {findItem} = this.props;
+        const {itemId} = this.props.params;
         if (!itemId) return;
 
         findItem(itemId)
@@ -78,4 +80,13 @@ const Content = ({item, children}) => {
                 }
             </>
     );
+}
+
+export default (props) => {
+    return (
+        <ItemDetails 
+        {...props}
+        params={useParams()}
+        />
+    )
 }
