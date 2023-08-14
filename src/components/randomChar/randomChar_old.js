@@ -1,54 +1,64 @@
-import React, { useEffect, useState } from 'react';
+import React, {Component} from 'react';
 import {ListGroup, ListGroupItem, Spinner, Row, Col} from 'reactstrap';
 import GotService from '../../service/service';
 import ErrorMessage from '../errorMessage/errorMessage';
 
-export default function RandomChar() {
-    const got = new GotService();
-    const [char, setChar] = useState({});
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
+export default class RandomChar extends Component {
+    got = new GotService();
 
-    useEffect(() => {
-        generateCharacter();
-    }, []);
+    state = {
+        char : {},
+        loading : true,
+        error : false
+    }  
 
-    const onChangeChar = (char) => {
-        setChar(char);
-        setLoading(false);
+    componentDidMount() {
+        this.generateCharacter();
+    }
+
+    onChangeChar = (char) => {
+        this.setState({
+            char : char,
+            loading : false
+        });
     }
     
-    const onError = (err) => {
-        setError(true);
-        setLoading(false);
+    onError = (err) => {
+        this.setState({
+            loading : false,
+            error : true
+        })
     }
 
-    const generateCharacter = () => {
+    generateCharacter() {
         const id = Math.ceil(Math.random() * 1000);
-        got.getCharacter(id)
-            .then(onChangeChar)
-            .catch(onError);
+        this.got.getCharacter(id)
+            .then(this.onChangeChar)
+            .catch(this.onError);
 
     }
 
-    const contentComponent = error || loading ? null : <Content char={char}/>;
-    const spinnerComponent = loading ? 
-        <ListGroupItem><Spinner className='m-5 p-5 text-bg-light'>loading..</Spinner></ListGroupItem>
-        : null;
-    const errorComponent = error ? <ListGroupItem><ErrorMessage/></ListGroupItem> : null;
+    render() {   
+        const { char, loading, error} = this.state;
+        const contentComponent = error || loading ? null : <Content char={char}/>;
+        const spinnerComponent = loading ? 
+            <ListGroupItem><Spinner className='m-5 p-5 text-bg-light'>loading..</Spinner></ListGroupItem>
+            : null;
+        const errorComponent = error ? <ListGroupItem><ErrorMessage/></ListGroupItem> : null;
 
 
-    return (
-        <Row>
-            <Col lg={{size: 5, offset: 0}}>
-                <ListGroup className='mb-5'>
-                    {contentComponent}
-                    {spinnerComponent}
-                    {errorComponent}
-                </ListGroup>
-            </Col>
-        </Row>
+        return (
+            <Row>
+                <Col lg={{size: 5, offset: 0}}>
+                    <ListGroup className='mb-5'>
+                        {contentComponent}
+                        {spinnerComponent}
+                        {errorComponent}
+                    </ListGroup>
+                </Col>
+            </Row>
         );
+    }
 }
 
 const Content = ({char}) => {

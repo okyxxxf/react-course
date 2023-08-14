@@ -1,67 +1,56 @@
-import React, {Component} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Container, ListGroup, ListGroupItem, Spinner} from 'reactstrap';
-import GotService from '../../service/service';
 import ErrorMessage from '../errorMessage/errorMessage';
 import { useParams } from 'react-router-dom';
 
-class ItemDetails extends Component {
-    got = new GotService();
+export default function ItemDetails({findItem, goal, children}) {
+    const params = useParams();
+    const [item, setItem] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
 
-    state = {
-        item : null,
-        loading : true,
-        error : false,
-    }
 
-    updateItem() {
-        const {findItem} = this.props;
-        const {itemId} = this.props.params;
+    const updateItem = () => {
+        const {itemId} = params;
         if (!itemId) return;
 
         findItem(itemId)
-            .then((item) => this.setState({
-                item : item,
-                loading : false
-            }));
+            .then((item) => {
+                setItem(item);
+                setLoading(false);
+            })
+            .catch((error) => {
+                setError(true);
+            })
     }
 
-    componentDidMount() {
-        this.updateItem();
-    }
-
-    componentDidUpdate() {
-        this.updateItem();
-    }
-
-    render() {
-        const {item, loading, error} = this.state;
-        const {goal} = this.props;
-
-        if (!item) {
-            return (
-                <ListGroup>
-                    <ListGroupItem>Please enter a {goal}</ListGroupItem>
-                </ListGroup>
-            )
-        }
-
-        const contentComponent = error || loading ? null : <Content item={item} children={this.props.children}/>;
-        const spinnerComponent = loading ? 
-            <ListGroupItem><Spinner className='m-5 p-5 text-bg-light'>loading..</Spinner></ListGroupItem>
-            : null;
-        const errorComponent = error ? <ListGroupItem><ErrorMessage/></ListGroupItem> : null;
-
-
+    useEffect(() => {
+        updateItem();
+    })
+    if (!item) {
         return (
-            <Container>
-                <ListGroup>
-                    {contentComponent}
-                    {spinnerComponent}
-                    {errorComponent}
-                </ListGroup>
-            </Container>
+            <ListGroup>
+                <ListGroupItem>Please enter a {goal}</ListGroupItem>
+            </ListGroup>
         )
     }
+
+    const contentComponent = error || loading ? null : <Content item={item} children={children}/>;
+    const spinnerComponent = loading ? 
+        <ListGroupItem><Spinner className='m-5 p-5 text-bg-light'>loading..</Spinner></ListGroupItem>
+        : null;
+    const errorComponent = error ? <ListGroupItem><ErrorMessage/></ListGroupItem> : null;
+
+
+    return (
+        <Container>
+            <ListGroup>
+                {contentComponent}
+                {spinnerComponent}
+                {errorComponent}
+            </ListGroup>
+        </Container>
+    )
 }
 
 
@@ -80,13 +69,4 @@ const Content = ({item, children}) => {
                 }
             </>
     );
-}
-
-export default (props) => {
-    return (
-        <ItemDetails 
-        {...props}
-        params={useParams()}
-        />
-    )
 }
